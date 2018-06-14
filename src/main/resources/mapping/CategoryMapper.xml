@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdm.dao.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.sdm.entity.Category" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="parentId" property="parentid" jdbcType="INTEGER" />
+    <result column="categoryName" property="categoryname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parentId, categoryName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByParameter" resultMap="BaseResultMap" parameterType="com.sdm.entity.Category" >
+    select
+    <include refid="Base_Column_List" />
+    from t_category
+    where 1=1
+    <if test="parentid != null" >
+       and parentId = #{parentid,jdbcType=INTEGER}
+    </if>
+    <if test="categoryname != null" >
+      and categoryName = #{categoryname,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="selectListByParameter" resultMap="BaseResultMap" parameterType="com.sdm.entity.Category" >
+    select
+    <include refid="Base_Column_List" />
+    from t_category
+    where 1=1
+    <if test="parentid != null" >
+      and parentId = #{parentid,jdbcType=INTEGER}
+    </if>
+    <if test="categoryname != null" >
+      and categoryName = #{categoryname,jdbcType=VARCHAR}
+    </if>
+    order by goodsNum desc, id desc
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sdm.entity.Category" useGeneratedKeys="true" keyProperty="id">
+    insert into t_category (parentId, categoryName
+      )
+    values (#{parentid,jdbcType=INTEGER}, #{categoryname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sdm.entity.Category" useGeneratedKeys="true" keyProperty="id">
+    insert into t_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="categoryname != null" >
+        categoryName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="categoryname != null" >
+        #{categoryname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sdm.entity.Category" >
+    update t_category
+    <set >
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="categoryname != null" >
+        categoryName = #{categoryname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sdm.entity.Category" >
+    update t_category
+    set parentId = #{parentid,jdbcType=INTEGER},
+      categoryName = #{categoryname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

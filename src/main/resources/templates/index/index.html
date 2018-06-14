@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="舍得买购物分享，优惠券领取">
+    <meta name="author" content="SDM by QY">
+    <meta name="keyword" content="舍得买, 购物分享, 优惠券, 福利购, 粉丝福利购">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/bootstrap/css/bootstrap.css'}" href="../bootstrap/css/bootstrap.css" />
+
+    <title>舍得买购物分享优惠券</title>
+</head>
+<body>
+<!--header start-->
+<header th:replace="~{main/top :: topmenu('index')}"></header>
+<!--header end-->
+<main role="main">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">舍得买(SDM)购物分享优惠券中心</h1>
+            <p class="lead text-muted">集成各平台优惠券.大量优惠券等你来领。</p>
+
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-4" th:each="goods, goodsstat : ${goodsList}">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" th:title="${goods.goodname}"  th:src="${goods.mainpicurl}" data-src="" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <a class="link" th:href="${goods.tbkurl}" href="#" th:title="${goods.goodname}" th:text="${goods.goodname}"></a>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div >
+                                    <a style="color: red" th:unless="${#lists.isEmpty(goods.couponList)}"   th:href="${goods.couponList[0].couponsextensionurl}" th:text="${goods.couponList[0].couponname}"></a>
+                                </div>
+                                <span style="color: red" class="pull-right" th:unless="${#lists.isEmpty(goods.couponList)}" th:text="${'券后价：' + (goods.price - goods.couponList[0].preferentialAmount)}"></span>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div >
+                                    <del><small class="text-muted" th:text="${'原价:' + goods.price}"></small></del>
+
+                                </div>
+                                <div class="btn-group">
+                                    <a th:unless="${#lists.isEmpty(goods.couponList)}" th:href="${goods.couponList[0].couponsextensionurl}" class="btn btn-sm btn-outline-secondary">领券</a>
+                                    <a th:href="${goods.tbkurl}"  class="btn btn-sm btn-outline-secondary">购买</a>
+                                </div>
+                                <small class="text-muted" th:text="${'月销量 ' + goods.monthsales}">999</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+<!--footer start-->
+<footer th:replace="~{main/footer :: footerh}"></footer>
+<!--footer end-->
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{'/js/jquery-3.3.1.min.js'}" src="../js/jquery-3.3.1.min.js"></script>
+<script th:src="@{'/js/popper.min.js'}" src="../js/popper.min.js"></script>
+<script th:src="@{'/bootstrap/js/bootstrap.js'}" src="../bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

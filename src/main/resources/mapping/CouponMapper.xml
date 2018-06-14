@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdm.dao.CouponMapper" >
+  <resultMap id="BaseResultMap" type="com.sdm.entity.Coupon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsid" property="goodsid" jdbcType="BIGINT" />
+    <result column="tbId" property="tbid" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponid" jdbcType="VARCHAR" />
+    <result column="couponTotal" property="coupontotal" jdbcType="INTEGER" />
+    <result column="couponSurplus" property="couponsurplus" jdbcType="INTEGER" />
+    <result column="couponName" property="couponname" jdbcType="VARCHAR" />
+    <result column="couponsStartTime" property="couponsstarttime" jdbcType="DATE" />
+    <result column="couponsEndTime" property="couponsendtime" jdbcType="DATE" />
+    <result column="couponsUrl" property="couponsurl" jdbcType="VARCHAR" />
+    <result column="couponsExtensionUrl" property="couponsextensionurl" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="fullAmount" property="fullAmount" jdbcType="INTEGER" />
+    <result column="preferentialAmount" property="preferentialAmount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goodsid, tbId, couponId, couponTotal, couponSurplus, couponName, couponsStartTime, 
+    couponsEndTime, couponsUrl, couponsExtensionUrl, createTime, updateTime, fullAmount, preferentialAmount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_coupon
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByGoodsidAndCouponId" resultMap="BaseResultMap" parameterType="com.sdm.entity.Coupon" >
+    select
+    <include refid="Base_Column_List" />
+    from t_coupon
+    where goodsid = #{goodsid,jdbcType=VARCHAR}
+    and couponId = #{couponid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByCouponId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_coupon
+    where couponId = #{couponid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByGoodsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_coupon
+    where goodsid = #{goodsid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByTbId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_coupon
+    where tbId = #{tbid,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_coupon
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sdm.entity.Coupon" useGeneratedKeys="true" keyProperty="id">
+    insert into t_coupon (goodsid, tbId,
+      couponId, couponTotal, couponSurplus, 
+      couponName, couponsStartTime, couponsEndTime, 
+      couponsUrl, couponsExtensionUrl, createTime,
+      updateTime, fullAmount, preferentialAmount)
+    values (#{goodsid,jdbcType=BIGINT}, #{tbid,jdbcType=VARCHAR},
+      #{couponid,jdbcType=VARCHAR}, #{coupontotal,jdbcType=INTEGER}, #{couponsurplus,jdbcType=INTEGER}, 
+      #{couponname,jdbcType=VARCHAR}, #{couponsstarttime,jdbcType=DATE}, #{couponsendtime,jdbcType=DATE}, 
+      #{couponsurl,jdbcType=VARCHAR}, #{couponsextensionurl,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{fullAmount,jdbcType=INTEGER}, #{preferentialAmount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sdm.entity.Coupon"  useGeneratedKeys="true" keyProperty="id">
+    insert into t_coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="tbid != null" >
+        tbId,
+      </if>
+      <if test="couponid != null" >
+        couponId,
+      </if>
+      <if test="coupontotal != null" >
+        couponTotal,
+      </if>
+      <if test="couponsurplus != null" >
+        couponSurplus,
+      </if>
+      <if test="couponname != null" >
+        couponName,
+      </if>
+      <if test="couponsstarttime != null" >
+        couponsStartTime,
+      </if>
+      <if test="couponsendtime != null" >
+        couponsEndTime,
+      </if>
+      <if test="couponsurl != null" >
+        couponsUrl,
+      </if>
+      <if test="couponsextensionurl != null" >
+        couponsExtensionUrl,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="updatetime != null" >
+        updateTime,
+      </if>
+      <if test="fullAmount != null" >
+        fullAmount,
+      </if>
+      <if test="preferentialAmount != null" >
+        preferentialAmount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+      <if test="goodsid != null" >
+        #{goodsid,jdbcType=BIGINT},
+      </if>
+      <if test="tbid != null" >
+        #{tbid,jdbcType=VARCHAR},
+      </if>
+      <if test="couponid != null" >
+        #{couponid,jdbcType=VARCHAR},
+      </if>
+      <if test="coupontotal != null" >
+        #{coupontotal,jdbcType=INTEGER},
+      </if>
+      <if test="couponsurplus != null" >
+        #{couponsurplus,jdbcType=INTEGER},
+      </if>
+      <if test="couponname != null" >
+        #{couponname,jdbcType=VARCHAR},
+      </if>
+      <if test="couponsstarttime != null" >
+        #{couponsstarttime,jdbcType=DATE},
+      </if>
+      <if test="couponsendtime != null" >
+        #{couponsendtime,jdbcType=DATE},
+      </if>
+      <if test="couponsurl != null" >
+        #{couponsurl,jdbcType=VARCHAR},
+      </if>
+      <if test="couponsextensionurl != null" >
+        #{couponsextensionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullAmount != null" >
+        #{fullAmount,jdbcType=INTEGER},
+      </if>
+      <if test="preferentialAmount != null" >
+        #{preferentialAmount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sdm.entity.Coupon" >
+    update t_coupon
+    <set >
+      <if test="goodsid != null" >
+        goodsid = #{goodsid,jdbcType=BIGINT},
+      </if>
+      <if test="tbid != null" >
+        tbId = #{tbid,jdbcType=VARCHAR},
+      </if>
+      <if test="couponid != null" >
+        couponId = #{couponid,jdbcType=VARCHAR},
+      </if>
+      <if test="coupontotal != null" >
+        couponTotal = #{coupontotal,jdbcType=INTEGER},
+      </if>
+      <if test="couponsurplus != null" >
+        couponSurplus = #{couponsurplus,jdbcType=INTEGER},
+      </if>
+      <if test="couponname != null" >
+        couponName = #{couponname,jdbcType=VARCHAR},
+      </if>
+      <if test="couponsstarttime != null" >
+        couponsStartTime = #{couponsstarttime,jdbcType=DATE},
+      </if>
+      <if test="couponsendtime != null" >
+        couponsEndTime = #{couponsendtime,jdbcType=DATE},
+      </if>
+      <if test="couponsurl != null" >
+        couponsUrl = #{couponsurl,jdbcType=VARCHAR},
+      </if>
+      <if test="couponsextensionurl != null" >
+        couponsExtensionUrl = #{couponsextensionurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullAmount != null" >
+        fullAmount = #{fullAmount,jdbcType=INTEGER},
+      </if>
+      <if test="preferentialAmount != null" >
+        preferentialAmount = #{preferentialAmount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sdm.entity.Coupon" >
+    update t_coupon
+    set goodsid = #{goodsid,jdbcType=BIGINT},
+      tbId = #{tbid,jdbcType=VARCHAR},
+      couponId = #{couponid,jdbcType=VARCHAR},
+      couponTotal = #{coupontotal,jdbcType=INTEGER},
+      couponSurplus = #{couponsurplus,jdbcType=INTEGER},
+      couponName = #{couponname,jdbcType=VARCHAR},
+      couponsStartTime = #{couponsstarttime,jdbcType=DATE},
+      couponsEndTime = #{couponsendtime,jdbcType=DATE},
+      couponsUrl = #{couponsurl,jdbcType=VARCHAR},
+      couponsExtensionUrl = #{couponsextensionurl,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      fullAmount = #{fullAmount,jdbcType=INTEGER},
+      preferentialAmount = #{preferentialAmount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

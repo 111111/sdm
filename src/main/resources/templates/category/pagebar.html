@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <ul class="pagination" th:fragment="pagebar">
+        <li class="page-item"><a class="page-link" th:href="@{/goods/goodslist} + '?pi=1&searchName=' + ${searchName}" href="#">首页</a></li>
+        <li class="page-item"><a class="page-link" th:href="@{/goods/goodslist} + '?pi=' + ${pageinfo.prePage} + '&searchName=' + ${searchName}"  href="#">上页</a></li>
+
+        <li class="page-item" th:each="pi, pistat: ${pageinfo.navigatepageNums}" th:classappend="${pi==pageinfo.pageNum}?'active':''"><a class="page-link"  th:text="${pi}" th:href="@{/goods/goodslist} + '?pi=' + ${pi} + '&searchName=' + ${searchName}"  href="#">pi</a></li>
+
+        <li class="page-item"><a class="page-link" th:href="@{/goods/goodslist} + '?pi=' + ${pageinfo.nextPage} + '&searchName=' + ${searchName}"  href="#">下页</a></li>
+        <li class="page-item"><a class="page-link" th:href="@{/goods/goodslist} + '?pi=' + ${pageinfo.pages} + '&searchName=' + ${searchName}"  href="#">末页</a></li>
+        <li class="page-item"><a class="page-link" href="#">当前第<th:block th:text="${pageinfo.pageNum}"></th:block>页，共<th:block th:text="${pageinfo.pages}"></th:block>页,共<th:block th:text="${pageinfo.total}"></th:block>条记录</a></li>
+    </ul>
+
+</body>
+</html>

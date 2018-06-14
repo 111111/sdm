@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/bootstrap/css/bootstrap.css'}" href="../bootstrap/css/bootstrap.css" />
+　
+    <title>商品列表</title>
+</head>
+<body>
+<!--header start-->
+<header th:replace="~{main/top :: topmenu('goodslist')}"></header>
+<!--header end-->
+<main role="main">
+<input type="hidden" name="thisurl" id="thisurl" th:value="@{/goods/goodslistjson}"/>
+    <input type="hidden" name="pages" id="pages" th:value="${pageinfo.pages}"/>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a th:href="@{/goods/goodslist}" href="#">所有商品</a></li>
+                <li class="active" th:if="${category} ne null">&gt;<a href="#" th:text="${category.categoryname}">青海</a></li>
+
+            </ul>
+            <div class="row" id="rowlistdiv">
+
+                <div class="col-md-4" th:each="goods, goodsstat : ${goodsList}" th:id="${goods.id}" >
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" th:title="${goods.goodname}"  th:src="${goods.mainpicurl}" data-src="" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">
+                            <a class="link" th:href="${goods.tbkurl}" href="#" th:title="${goods.goodname}" th:text="${goods.goodname}"></a>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a style="color: red" th:unless="${#lists.isEmpty(goods.couponList)}" th:href="${goods.couponList[0].couponsextensionurl}" th:text="${goods.couponList[0].couponname}"></a>
+                                </div>
+                                <span style="color: red" class="pull-right" th:unless="${#lists.isEmpty(goods.couponList)}" th:text="${'券后价：' + (goods.price - goods.couponList[0].preferentialAmount)}"></span>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div >
+                                    <del><small class="text-muted" th:text="${'原价:' + goods.price}"></small></del>
+
+                                </div>
+                                <div class="btn-group">
+                                    <a  th:unless="${#lists.isEmpty(goods.couponList)}" th:href="${goods.couponList[0].couponsextensionurl}" class="btn btn-sm btn-outline-secondary">领券</a>
+                                    <a th:href="${goods.tbkurl}"  class="btn btn-sm btn-outline-secondary">购买</a>
+                                </div>
+                                <small class="text-muted" th:text="${'月销量 ' + goods.monthsales}">999</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" id="pagesrow">
+                <ul th:replace="~{goods/pagebar :: pagebar}"></ul>
+
+            </div>
+            <div class="row" style="display: none;" id="nullrow">
+                <ul>没有更多了...</ul>
+
+            </div>
+        </div>
+    </div>
+<div style="display: none" id="goodstemplate">
+
+    <div class="col-md-4" id="#id#" >
+        <div class="card mb-4 box-shadow">
+            <img class="card-img-top" title="#goodname#"  src="#mainpicurl#" data-src="" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text">
+                    <a class="link" href="#tbkurl#"  title="#goodname#">#goodname#</a>
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a style="color: red" href="#coupon.couponsextensionurl#">#coupon.couponname#</a>
+                    </div>
+                    <span style="color: red" class="pull-right" >券后价：#price-preferentialAmount#</span>
+
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div >
+                        <del><small class="text-muted">原价:#price#</small></del>
+
+                    </div>
+                    <div class="btn-group">
+                        <a  href="#coupon.couponsextensionurl#" class="btn btn-sm btn-outline-secondary">领券</a>
+                        <a href="#tbkurl#"  class="btn btn-sm btn-outline-secondary">购买</a>
+                    </div>
+                    <small class="text-muted">月销量#monthsales#</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<!--footer start-->
+<footer th:replace="~{main/footer :: footerh}"></footer>
+<!--footer end-->
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{'/js/jquery-3.3.1.min.js'}" src="../js/jquery-3.3.1.min.js"></script>
+<script th:src="@{'/js/popper.min.js'}" src="../js/popper.min.js"></script>
+<script th:src="@{'/bootstrap/js/bootstrap.js'}" src="../bootstrap/js/bootstrap.js"></script>
+
+<script th:src="@{'/js/formatNumber.js'}" src="../js/formatNumber.js"></script>
+
+<script>
+
+    function search(){
+        var searchName = $("#searchName").val();
+        if(searchName != ''){
+            return true;
+        }
+        return false;
+    }
+
+    var i = 1; //设置当前页数，全局变量
+    function getData() {
+        i++;
+
+
+        $(window).unbind('scroll');
+        var searchName = $("#searchName").val();
+        var pages = $("#pages").val();
+
+        if(i > pages){
+            $("#pagesrow").hide();
+            $("#nullrow").show();
+            return;
+        }
+
+        var url = $("#thisurl").val();
+        var param = {"pi" : i, "searchName" : searchName};
+        $.get(url, param, function(data){
+            console.log(data);
+            insertDiv(data.list);
+            $(window).scroll(scrollHandler);
+        });
+    }
+
+    //生成数据html,append到div中
+    function insertDiv(listjson) {
+        var rowlistdiv = $("#rowlistdiv");
+        var html = '';
+        var template = $("#goodstemplate").html();
+        for (var i = 0; i < listjson.length; i++) {
+            html += template.replace(/#id#/g, listjson[i].id).replace(/#goodname#/g, listjson[i].goodname)
+                .replace(/#mainpicurl#/g, listjson[i].mainpicurl)
+                .replace(/#tbkurl#/g, listjson[i].tbkurl)
+                .replace(/#coupon.couponsextensionurl#/g, listjson[i].couponList[0].couponsextensionurl)
+                .replace(/#coupon.couponname#/g, listjson[i].couponList[0].couponname)
+                .replace(/#price-preferentialAmount#/g, formatCurrency(listjson[i].price - listjson[i].couponList[0].preferentialAmount))
+                .replace(/#coupon.couponsextensionurl#/g, listjson[i].couponList[0].couponsextensionurl)
+                .replace(/#price#/g, listjson[i].price)
+                .replace(/#tbkurl#/g, listjson[i].tbkurl)
+                .replace(/#monthsales#/g, listjson[i].monthsales)
+
+        }
+        rowlistdiv.append(html);
+    }
+
+    var winH = $(window).height(); //页面可视区域高度
+
+    var scrollHandler = function () {
+        var pageH = $(document.body).height();
+        var scrollT = $(window).scrollTop(); //滚动条top
+        var aa = (pageH - winH - scrollT);
+        console.log(pageH + ',' + scrollT +',' + winH+ ',' + aa);
+        if (aa < 200) {
+            if (i % 10 === 0) {//每10页做一次停顿！
+                getData(i);
+                // $(window).unbind('scroll');
+                // $("#btn_Page").show();
+            } else {
+                getData(i);
+                // $("#btn_Page").hide();
+            }
+        }
+    }
+    //定义鼠标滚动事件
+    $(window).scroll(scrollHandler);
+</script>
+</body>
+</html>

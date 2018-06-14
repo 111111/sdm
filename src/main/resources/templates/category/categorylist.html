@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/bootstrap/css/bootstrap.css'}" href="../bootstrap/css/bootstrap.css" />
+　
+    <title>商品列表</title>
+</head>
+<body>
+<!--header start-->
+<header th:replace="~{main/top :: topmenu('categorylist')}"></header>
+<!--header end-->
+<main role="main">
+<input type="hidden" name="thisurl" id="thisurl" th:value="@{/goods/goodslistjson}"/>
+    <input type="hidden" name="pages" id="pages" th:value="${pageinfo.pages}"/>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row" id="rowlistdiv">
+
+                <div class="col-md-2" th:each="category, categorystat : ${pageinfo.list}" th:id="${category.id}" >
+                    <div class="card mb-2 box-shadow">
+                        <div class="card-body">
+                            <p class="card-text">
+                            <a class="link" th:href="@{/goods/goodslist} + '?categoryid=' + ${category.id}" th:title="${category.categoryname}" th:text="${category.categoryname}"></a>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</main>
+<!--footer start-->
+<footer th:replace="~{main/footer :: footerh}"></footer>
+<!--footer end-->
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{'/js/jquery-3.3.1.min.js'}" src="../js/jquery-3.3.1.min.js"></script>
+<script th:src="@{'/js/popper.min.js'}" src="../js/popper.min.js"></script>
+<script th:src="@{'/bootstrap/js/bootstrap.js'}" src="../bootstrap/js/bootstrap.js"></script>
+
+<script th:src="@{'/js/formatNumber.js'}" src="../js/formatNumber.js"></script>
+
+<script>
+
+
+</script>
+</body>
+</html>
