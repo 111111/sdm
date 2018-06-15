@@ -3,7 +3,7 @@
 <mapper namespace="com.sdm.dao.GoodsMapper" >
   <resultMap id="BaseResultMap" type="com.sdm.entity.Goods" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="goodId" property="goodid" jdbcType="VARCHAR" />
+    <result column="tbId" property="tbid" jdbcType="VARCHAR" />
     <result column="goodName" property="goodname" jdbcType="VARCHAR" />
     <result column="mainPicUrl" property="mainpicurl" jdbcType="VARCHAR" />
     <result column="viewUrl" property="viewurl" jdbcType="VARCHAR" />
@@ -32,7 +32,7 @@
                 ofType="com.sdm.entity.Coupon" select="selectcouponListByGoodsId"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, goodId, goodName, mainPicUrl, viewUrl, category, categoryIds, tbkUrl, price, monthSales, incomeRatio,
+    id, tbId, goodName, mainPicUrl, viewUrl, category, categoryIds, tbkUrl, price, monthSales, incomeRatio,
     commision, sellerName, sellerId, shopName, platform, couponId, couponTotal, couponSurplus, 
     couponName, couponsStartTime, couponsEndTime, couponsUrl, couponsExtensionUrl, createTime,
     updateTime
@@ -53,8 +53,8 @@
     <include refid="Base_Column_List" />
     from t_goods a
     where 1=1
-    <if test="goodid != null" >
-      and goodId = #{goodid,jdbcType=VARCHAR}
+    <if test="tbid != null" >
+      and tbId = #{tbid,jdbcType=VARCHAR}
     </if>
     <if test="goodname != null" >
       <bind name="pattern1" value="'%'+goodname+'%'"/>
@@ -84,18 +84,18 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
-  <select id="selectByGoodId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByTbId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from t_goods
-    where goodId = #{id,jdbcType=VARCHAR}
+    where tbId = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_goods
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.sdm.entity.Goods" useGeneratedKeys="true" keyProperty="id">
-    insert into t_goods (goodId, goodName,
+    insert into t_goods (tbId, goodName,
       mainPicUrl, viewUrl, category, categoryIds,
       tbkUrl, price, monthSales, 
       incomeRatio, commision, sellerName, 
@@ -104,7 +104,7 @@
       couponName, couponsStartTime, couponsEndTime, 
       couponsUrl, couponsExtensionUrl, createTime,
       updateTime)
-    values (#{goodid,jdbcType=VARCHAR}, #{goodname,jdbcType=VARCHAR},
+    values (#{tbid,jdbcType=VARCHAR}, #{goodname,jdbcType=VARCHAR},
       #{mainpicurl,jdbcType=VARCHAR}, #{viewurl,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{categoryIds,jdbcType=VARCHAR},
       #{tbkurl,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{monthsales,jdbcType=INTEGER}, 
       #{incomeratio,jdbcType=DECIMAL}, #{commision,jdbcType=DECIMAL}, #{sellername,jdbcType=VARCHAR}, 
@@ -118,8 +118,8 @@
     insert into t_goods
     <trim prefix="(" suffix=")" suffixOverrides="," >
 
-      <if test="goodid != null" >
-        goodId,
+      <if test="tbid != null" >
+        tbId,
       </if>
       <if test="goodname != null" >
         goodName,
@@ -196,8 +196,8 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
 
-      <if test="goodid != null" >
-        #{goodid,jdbcType=VARCHAR},
+      <if test="tbid != null" >
+        #{tbid,jdbcType=VARCHAR},
       </if>
       <if test="goodname != null" >
         #{goodname,jdbcType=VARCHAR},
@@ -273,8 +273,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sdm.entity.Goods" >
     update t_goods
     <set >
-      <if test="goodid != null" >
-        goodId = #{goodid,jdbcType=VARCHAR},
+      <if test="tbid != null" >
+        tbId = #{tbid,jdbcType=VARCHAR},
       </if>
       <if test="goodname != null" >
         goodName = #{goodname,jdbcType=VARCHAR},
@@ -353,7 +353,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sdm.entity.Goods" >
     update t_goods
-    set goodId = #{goodid,jdbcType=VARCHAR},
+    set tbId = #{tbid,jdbcType=VARCHAR},
       goodName = #{goodname,jdbcType=VARCHAR},
       mainPicUrl = #{mainpicurl,jdbcType=VARCHAR},
       viewUrl = #{viewurl,jdbcType=VARCHAR},

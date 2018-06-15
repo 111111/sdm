@@ -19,7 +19,7 @@ public interface GoodsMapper {
 
     Goods selectByPrimaryKey(Long id);
 
-    Goods selectByGoodId(String goodId);
+    Goods selectByTbId(String tbId);
 
     int updateByPrimaryKeySelective(Goods record);
 

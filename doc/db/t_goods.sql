@@ -1,6 +1,6 @@
 CREATE TABLE `t_goods` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `goodId` varchar(20) NOT NULL COMMENT '商品id',
+  `tbId` varchar(20) NOT NULL COMMENT '商品id',
   `goodName` varchar(255) NOT NULL COMMENT '商品名称',
   `mainPicUrl` varchar(500) DEFAULT NULL COMMENT '主图地址',
   `viewUrl` varchar(500) DEFAULT NULL COMMENT '详情地址',

@@ -8,7 +8,7 @@ import java.util.List;
 public class Goods {
     private Long id;
 
-    private String goodid;
+    private String tbid;
 
     private String goodname;
 
@@ -68,12 +68,12 @@ public class Goods {
         this.id = id;
     }
 
-    public String getGoodid() {
-        return goodid;
+    public String getTbid() {
+        return tbid;
     }
 
-    public void setGoodid(String goodid) {
-        this.goodid = goodid == null ? null : goodid.trim();
+    public void setTbid(String tbid) {
+        this.tbid = tbid == null ? null : tbid.trim();
     }
 
     public String getGoodname() {
@@ -287,7 +287,7 @@ public class Goods {
     public String toString() {
         return "Goods{" +
                 "id=" + id +
-                ", goodid='" + goodid + '\'' +
+                ", tbid='" + tbid + '\'' +
                 ", goodname='" + goodname + '\'' +
                 ", mainpicurl='" + mainpicurl + '\'' +
                 ", viewurl='" + viewurl + '\'' +
