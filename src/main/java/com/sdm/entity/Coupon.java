@@ -29,9 +29,11 @@ public class Coupon {
 
     private Date updatetime;
 
-    private int fullAmount;
+    private Integer fullAmount;
 
-    private int preferentialAmount;
+    private Integer preferentialAmount;
+
+    private Goods goods;
 
     public Long getId() {
         return id;
@@ -137,20 +139,28 @@ public class Coupon {
         this.updatetime = updatetime;
     }
 
-    public int getFullAmount() {
+    public Integer getFullAmount() {
         return fullAmount;
     }
 
-    public void setFullAmount(int fullAmount) {
+    public void setFullAmount(Integer fullAmount) {
         this.fullAmount = fullAmount;
     }
 
-    public int getPreferentialAmount() {
+    public Integer getPreferentialAmount() {
         return preferentialAmount;
     }
 
-    public void setPreferentialAmount(int preferentialAmount) {
+    public void setPreferentialAmount(Integer preferentialAmount) {
         this.preferentialAmount = preferentialAmount;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 
     @Override

@@ -23,6 +23,8 @@ public interface CouponMapper {
 
     List<Coupon> selectByTbId(String tbIs);
 
+    List<Coupon> selectByParamter(Coupon coupon);
+
     int updateByPrimaryKeySelective(Coupon record);
 
     int updateByPrimaryKey(Coupon record);

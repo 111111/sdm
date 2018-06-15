@@ -18,6 +18,25 @@
     <result column="fullAmount" property="fullAmount" jdbcType="INTEGER" />
     <result column="preferentialAmount" property="preferentialAmount" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="BaseResultMap2" type="com.sdm.entity.Coupon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsid" property="goodsid" jdbcType="BIGINT" />
+    <result column="tbId" property="tbid" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponid" jdbcType="VARCHAR" />
+    <result column="couponTotal" property="coupontotal" jdbcType="INTEGER" />
+    <result column="couponSurplus" property="couponsurplus" jdbcType="INTEGER" />
+    <result column="couponName" property="couponname" jdbcType="VARCHAR" />
+    <result column="couponsStartTime" property="couponsstarttime" jdbcType="DATE" />
+    <result column="couponsEndTime" property="couponsendtime" jdbcType="DATE" />
+    <result column="couponsUrl" property="couponsurl" jdbcType="VARCHAR" />
+    <result column="couponsExtensionUrl" property="couponsextensionurl" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="fullAmount" property="fullAmount" jdbcType="INTEGER" />
+    <result column="preferentialAmount" property="preferentialAmount" jdbcType="INTEGER" />
+    <association property="goods"  column="{id=goodsid}" select="com.sdm.dao.GoodsMapper.selectByPrimaryKey"/>
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     id, goodsid, tbId, couponId, couponTotal, couponSurplus, couponName, couponsStartTime, 
     couponsEndTime, couponsUrl, couponsExtensionUrl, createTime, updateTime, fullAmount, preferentialAmount
@@ -56,6 +75,44 @@
     <include refid="Base_Column_List" />
     from t_coupon
     where tbId = #{tbid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByParamter" resultMap="BaseResultMap2" parameterType="com.sdm.entity.Coupon" >
+    select
+    <include refid="Base_Column_List" />
+    from t_coupon
+    where 1=1
+    <if test="goodsid != null" >
+      and goodsid = #{goodsid,jdbcType=BIGINT}
+    </if>
+    <if test="tbid != null" >
+      and tbId = #{tbid,jdbcType=VARCHAR}
+    </if>
+    <if test="couponid != null" >
+      and couponId = #{couponid,jdbcType=VARCHAR}
+    </if>
+    <if test="coupontotal != null" >
+      and couponTotal = #{coupontotal,jdbcType=INTEGER}
+    </if>
+    <if test="couponsurplus != null" >
+      and couponSurplus = #{couponsurplus,jdbcType=INTEGER}
+    </if>
+    <if test="couponname != null" >
+      and couponName = #{couponname,jdbcType=VARCHAR}
+    </if>
+    <if test="couponsstarttime != null" >
+      and couponsStartTime &gt;= #{couponsstarttime,jdbcType=DATE}
+    </if>
+    <if test="couponsendtime != null" >
+      and couponsEndTime &lt;= #{couponsendtime,jdbcType=DATE}
+    </if>
+    <if test="fullAmount != null" >
+      fullAmount = #{fullAmount,jdbcType=INTEGER}
+    </if>
+    <if test="preferentialAmount != null" >
+      preferentialAmount = #{preferentialAmount,jdbcType=INTEGER}
+    </if>
+    order by preferentialAmount desc, fullAmount asc, couponsEndTime desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

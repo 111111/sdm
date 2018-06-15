@@ -23,8 +23,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">发现好货</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">领券中心</a>
+                <li class="nav-item" th:classappend="${menu=='couponlist'} ? 'active' : ''">
+                    <a class="nav-link" th:href="@{/coupon/couponlist}" href="#">领券中心</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">销售排行</a>

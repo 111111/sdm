@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/bootstrap/css/bootstrap.css'}" href="../bootstrap/css/bootstrap.css" />
+　
+    <title>列表</title>
+</head>
+<body>
+<!--header start-->
+<header th:replace="~{main/top :: topmenu('couponlist')}"></header>
+<!--header end-->
+<main role="main">
+<input type="hidden" name="thisurl" id="thisurl" th:value="@{/coupon/couponlistjson}"/>
+    <input type="hidden" name="pages" id="pages" th:value="${pageinfo.pages}"/>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row" id="rowlistdiv">
+
+                <div class="col-md-3" th:each="coupon, couponstat : ${pageinfo.list}" th:id="${coupon.id}" >
+                        <div class="card-body">
+                            <img class="card-img-top" th:title="${coupon.goods.goodname}"  th:src="${coupon.goods.mainpicurl}" data-src="" alt="Card image cap">
+                            <a class="link" th:href="${coupon.goods.tbkurl}" href="#" th:title="${coupon.goods.goodname}" th:text="${coupon.goods.goodname}"></a>
+                            <div class="card mb-3 box-shadow">
+                                <a class="btn btn-outline-danger" th:href="${coupon.couponsextensionurl}" th:title="${coupon.couponname}" th:text="${coupon.couponname}"></a>
+                            </div>
+                            <div>
+                                <del><small class="text-muted" th:text="${'原价:' + coupon.goods.price}"></small></del>
+                                <span style="color: red" class="pull-right"  th:text="${'券后：' + (coupon.goods.price - coupon.preferentialAmount)}"></span>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style="display: none;" id="nullrow">
+                <ul>没有更多了...</ul>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="couponTemolate" style="display: none;">
+        <div class="col-md-3">
+            <div class="card-body">
+                <img class="card-img-top" title="#goods.goodname#"  src="#goods.mainpicurl#"  alt="Card image cap">
+                <a class="link" href="#goods.tbkurl#"  title="#goods.goodname#">#goods.goodname#</a>
+                <div class="card mb-3 box-shadow">
+                    <a class="btn btn-outline-danger" href="#couponsextensionurl#" title="#couponname#" >#couponname#</a>
+                </div>
+                <div>
+                    <del><small class="text-muted">原价:#goods.price#</small></del>
+                    <span style="color: red" class="pull-right" >券后：#goods.price-preferentialAmount#</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!--footer start-->
+<footer th:replace="~{main/footer :: footerh}"></footer>
+<!--footer end-->
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{'/js/jquery-3.3.1.min.js'}" src="../js/jquery-3.3.1.min.js"></script>
+<script th:src="@{'/js/popper.min.js'}" src="../js/popper.min.js"></script>
+<script th:src="@{'/bootstrap/js/bootstrap.js'}" src="../bootstrap/js/bootstrap.js"></script>
+
+<script th:src="@{'/js/formatNumber.js'}" src="../js/formatNumber.js"></script>
+
+<script>
+    var i = 1; //设置当前页数，全局变量
+    function getData() {
+        i++;
+
+
+        $(window).unbind('scroll');
+        var pages = $("#pages").val();
+
+        if(i > pages){
+            $("#pagesrow").hide();
+            $("#nullrow").show();
+            return;
+        }
+
+        var url = $("#thisurl").val();
+        var param = {"pi" : i};
+        $.get(url, param, function(data){
+            console.log(data);
+            insertDiv(data.list);
+            $(window).scroll(scrollHandler);
+        });
+    }
+
+    //生成数据html,append到div中
+    function insertDiv(listjson) {
+        var rowlistdiv = $("#rowlistdiv");
+        var html = '';
+        var template = $("#couponTemolate").html();
+        for (var i = 0; i < listjson.length; i++) {
+            html += template.replace(/#goods.goodname#/g, listjson[i].goods.goodname)
+                .replace(/#goods.mainpicurl#/g, listjson[i].goods.mainpicurl)
+                .replace(/#goods.tbkurl#/g, listjson[i].goods.tbkurl)
+                .replace(/#couponsextensionurl#/g, listjson[i].couponsextensionurl)
+                .replace(/#couponname#/g, listjson[i].couponname)
+                .replace(/#goods.price-preferentialAmount#/g, formatCurrency(listjson[i].goods.price - listjson[i].preferentialAmount))
+                .replace(/#goods.price#/g, listjson[i].goods.price);
+
+        }
+        rowlistdiv.append(html);
+    }
+
+    var winH = $(window).height(); //页面可视区域高度
+
+    var scrollHandler = function () {
+        var pageH = $(document.body).height();
+        var scrollT = $(window).scrollTop(); //滚动条top
+        var aa = (pageH - winH - scrollT);
+        console.log(pageH + ',' + scrollT +',' + winH+ ',' + aa);
+        if (aa < 200) {
+            if (i % 10 === 0) {//每10页做一次停顿！
+                getData(i);
+                // $(window).unbind('scroll');
+                // $("#btn_Page").show();
+            } else {
+                getData(i);
+                // $("#btn_Page").hide();
+            }
+        }
+    }
+    //定义鼠标滚动事件
+    $(window).scroll(scrollHandler);
+
+</script>
+</body>
+</html>
