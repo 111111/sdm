@@ -28,26 +28,17 @@
     <result column="couponsExtensionUrl" property="couponsextensionurl" jdbcType="VARCHAR" />
     <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="voucherPrice" property="voucherPrice" jdbcType="DECIMAL" />
     <collection property="couponList" column="{goodsid=id}" javaType="ArrayList"
-                ofType="com.sdm.entity.Coupon" select="selectcouponListByGoodsId"/>
+                ofType="com.sdm.entity.Coupon" select="com.sdm.dao.CouponMapper.selectByGoodsId"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, tbId, goodName, mainPicUrl, viewUrl, category, categoryIds, tbkUrl, price, monthSales, incomeRatio,
     commision, sellerName, sellerId, shopName, platform, couponId, couponTotal, couponSurplus, 
     couponName, couponsStartTime, couponsEndTime, couponsUrl, couponsExtensionUrl, createTime,
-    updateTime
+    updateTime,voucherPrice
   </sql>
 
-  <select id="selectcouponListByGoodsId" parameterType="java.util.Map" resultType="com.sdm.entity.Coupon" >
-    select
-    id, goodsid, tbId, couponId, couponTotal, couponSurplus, couponName, couponsStartTime,
-    couponsEndTime, couponsUrl, couponsExtensionUrl, createTime, updateTime, fullAmount, preferentialAmount
-    from t_coupon
-    where goodsid = #{goodsid,jdbcType=INTEGER}
-    and now() &gt;= couponsStartTime
-    and now() &lt;= couponsEndTime
-    order by preferentialAmount desc
-  </select>
   <select id="selectList" resultMap="BaseResultMap" parameterType="com.sdm.entity.Goods" >
     select
     <include refid="Base_Column_List" />
@@ -72,9 +63,9 @@
     <if test="platform != null" >
      and platform = #{platform,jdbcType=VARCHAR}
     </if>
-    and now() &gt;= couponsStartTime
-    and now() &lt;= couponsEndTime
-    order by createTime desc
+--     and now() &gt;= couponsStartTime
+--     and now() &lt;= couponsEndTime
+    order by updateTime desc
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
@@ -103,7 +94,7 @@
       couponId, couponTotal, couponSurplus, 
       couponName, couponsStartTime, couponsEndTime, 
       couponsUrl, couponsExtensionUrl, createTime,
-      updateTime)
+      updateTime, voucherPrice)
     values (#{tbid,jdbcType=VARCHAR}, #{goodname,jdbcType=VARCHAR},
       #{mainpicurl,jdbcType=VARCHAR}, #{viewurl,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{categoryIds,jdbcType=VARCHAR},
       #{tbkurl,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{monthsales,jdbcType=INTEGER}, 
@@ -112,7 +103,7 @@
       #{couponid,jdbcType=VARCHAR}, #{coupontotal,jdbcType=INTEGER}, #{couponsurplus,jdbcType=INTEGER}, 
       #{couponname,jdbcType=VARCHAR}, #{couponsstarttime,jdbcType=DATE}, #{couponsendtime,jdbcType=DATE}, 
       #{couponsurl,jdbcType=VARCHAR}, #{couponsextensionurl,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP})
+      #{updatetime,jdbcType=TIMESTAMP}, #{voucherPrice,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.sdm.entity.Goods"  useGeneratedKeys="true" keyProperty="id">
     insert into t_goods
@@ -193,6 +184,9 @@
       <if test="updatetime != null" >
         updateTime,
       </if>
+      <if test="voucherPrice != null" >
+        voucherPrice,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
 
@@ -267,6 +261,9 @@
       </if>
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="voucherPrice != null" >
+        #{voucherPrice,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -348,6 +345,9 @@
       <if test="updatetime != null" >
         updateTime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="voucherPrice != null" >
+        voucherPrice = #{voucherPrice,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -377,7 +377,8 @@
       couponsUrl = #{couponsurl,jdbcType=VARCHAR},
       couponsExtensionUrl = #{couponsextensionurl,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
-      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      voucherPrice = #{voucherPrice,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

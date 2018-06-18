@@ -35,9 +35,10 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <a style="color: red" th:unless="${#lists.isEmpty(goods.couponList)}" th:href="${goods.couponList[0].couponsextensionurl}" th:text="${goods.couponList[0].couponname}"></a>
+                                    <a style="color: red" th:unless="${#strings.isEmpty(goods.couponname)}" th:href="${goods.couponsextensionurl}" th:text="${goods.couponname}"></a>
                                 </div>
-                                <span style="color: red" class="pull-right" th:unless="${#lists.isEmpty(goods.couponList)}" th:text="${'券后价：' + (goods.price - goods.couponList[0].preferentialAmount)}"></span>
+                                <span style="color: red" class="pull-right" th:unless="${#strings.isEmpty(goods.couponname)}" th:text="'券后价：' + ${goods.voucherPrice}"></span>
+                                <span style="color: red" class="pull-right" th:if="${#strings.isEmpty(goods.couponname)}" th:text="'现价：' + ${goods.voucherPrice}"></span>
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
@@ -46,7 +47,7 @@
 
                                 </div>
                                 <div class="btn-group">
-                                    <a  th:unless="${#lists.isEmpty(goods.couponList)}" th:href="${goods.couponList[0].couponsextensionurl}" class="btn btn-sm btn-outline-secondary">领券</a>
+                                    <a  th:unless="${#strings.isEmpty(goods.couponname)}" th:href="${goods.couponsextensionurl}" class="btn btn-sm btn-outline-secondary">领券</a>
                                     <a th:href="${goods.tbkurl}"  class="btn btn-sm btn-outline-secondary">购买</a>
                                 </div>
                                 <small class="text-muted" th:text="${'月销量 ' + goods.monthsales}">999</small>
@@ -79,7 +80,7 @@
                     <div>
                         <a style="color: red" href="#coupon.couponsextensionurl#">#coupon.couponname#</a>
                     </div>
-                    <span style="color: red" class="pull-right" >券后价：#price-preferentialAmount#</span>
+                    <span style="color: red" class="pull-right" >#voucherPrice#</span>
 
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
@@ -149,17 +150,26 @@
         var html = '';
         var template = $("#goodstemplate").html();
         for (var i = 0; i < listjson.length; i++) {
-            html += template.replace(/#id#/g, listjson[i].id).replace(/#goodname#/g, listjson[i].goodname)
+            var couponname = listjson[i].couponname || '';
+            console.log("couponname:" + couponname);
+            var temp = template.replace(/#id#/g, listjson[i].id).replace(/#goodname#/g, listjson[i].goodname)
                 .replace(/#mainpicurl#/g, listjson[i].mainpicurl)
                 .replace(/#tbkurl#/g, listjson[i].tbkurl)
-                .replace(/#coupon.couponsextensionurl#/g, listjson[i].couponList[0].couponsextensionurl)
-                .replace(/#coupon.couponname#/g, listjson[i].couponList[0].couponname)
-                .replace(/#price-preferentialAmount#/g, formatCurrency(listjson[i].price - listjson[i].couponList[0].preferentialAmount))
-                .replace(/#coupon.couponsextensionurl#/g, listjson[i].couponList[0].couponsextensionurl)
+                .replace(/#coupon.couponsextensionurl#/g, listjson[i].couponsextensionurl)
+
+
+                .replace(/#coupon.couponsextensionurl#/g, listjson[i].couponsextensionurl)
                 .replace(/#price#/g, listjson[i].price)
                 .replace(/#tbkurl#/g, listjson[i].tbkurl)
-                .replace(/#monthsales#/g, listjson[i].monthsales)
-
+                .replace(/#monthsales#/g, listjson[i].monthsales);
+            if(couponname.length != 0){
+                temp = temp.replace(/#voucherPrice#/g, "券后价：" + listjson[i].voucherPrice)
+                    .replace(/#coupon.couponname#/g, listjson[i].couponname);
+            }else{
+                temp = temp.replace(/#voucherPrice#/g, "现价：" + listjson[i].voucherPrice)
+                    .replace(/#coupon.couponname#/g, '');
+            }
+            html += temp;
         }
         rowlistdiv.append(html);
     }
