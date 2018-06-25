@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{'/bootstrap/css/bootstrap.css'}" href="../bootstrap/css/bootstrap.css" />
+　
+    <title>领券中心-舍得买（SDM）</title>
+</head>
+<body>
+<!--header start-->
+<header th:replace="~{main/top :: topmenu('couponlist')}"></header>
+<!--header end-->
+<main role="main">
+<input type="hidden" name="thisurl" id="thisurl" th:value="@{/coupon/tbcouponlistappend}"/>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row" id="rowlistdiv">
+
+                <div class="col-md-3" th:each="coupon, couponstat : ${tbkCouponList}" >
+                        <div class="card-body">
+                            <img class="card-img-top" th:title="${coupon.title}"  th:src="${coupon.pictUrl}" data-src="" alt="Card image cap">
+                            <a class="link" th:href="${coupon.couponClickUrl}" href="#" th:title="${coupon.title}" th:text="${coupon.title}"></a>
+                            <div class="card mb-3 box-shadow">
+                                <a class="btn btn-outline-danger" th:href="${coupon.couponClickUrl}" th:title="${coupon.couponInfo}" th:text="${coupon.couponInfo}"></a>
+                            </div>
+                            <div>
+                                <span style="color: red" class="pull-right"  th:text="${'折扣价：' + coupon.zkFinalPrice}"></span>
+                                <small class="text-muted" th:text="${'月销量 ' + coupon.volume}">999</small>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style="display: none;" id="nullrow">
+                <ul>没有更多了...</ul>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</main>
+<!--footer start-->
+<footer th:replace="~{main/footer :: footerh}"></footer>
+<!--footer end-->
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{'/js/jquery-3.3.1.min.js'}" src="../js/jquery-3.3.1.min.js"></script>
+<script th:src="@{'/js/popper.min.js'}" src="../js/popper.min.js"></script>
+<script th:src="@{'/bootstrap/js/bootstrap.js'}" src="../bootstrap/js/bootstrap.js"></script>
+
+<script th:src="@{'/js/formatNumber.js'}" src="../js/formatNumber.js"></script>
+
+<script>
+    var i = 1; //设置当前页数，全局变量
+    $(document).ready(function(){
+        //定义鼠标滚动事件
+        $(window).scroll(scrollHandler);
+    });
+
+
+    function getData() {
+        i++;
+
+        $(window).unbind('scroll');
+
+        var url = $("#thisurl").val();
+        var searchName = $("#searchName").val();
+        var param = {"pi" : i, "searchName" : searchName};
+        $.get(url, param, function(data){
+            console.log("data = " + data);
+            insertDiv(data);
+            $(window).scroll(scrollHandler);
+        });
+    }
+
+    //生成数据html,append到div中
+    function insertDiv(data) {
+        var rowlistdiv = $("#rowlistdiv");
+
+        // console.log($(data).find("body").html());
+        rowlistdiv.append(data);
+    }
+
+    var winH = $(window).height(); //页面可视区域高度
+
+    var scrollHandler = function () {
+        var pageH = $(document.body).height();
+        var scrollT = $(window).scrollTop(); //滚动条top
+        var aa = (pageH - winH - scrollT);
+        console.log(pageH + ',' + scrollT +',' + winH+ ',' + aa);
+        if (aa < 200) {
+            if (i % 10 === 0) {//每10页做一次停顿！
+                getData(i);
+                // $(window).unbind('scroll');
+                // $("#btn_Page").show();
+            } else {
+                getData(i);
+                // $("#btn_Page").hide();
+            }
+        }
+    }
+
+
+</script>
+</body>
+</html>

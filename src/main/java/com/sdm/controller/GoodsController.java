@@ -1,25 +1,20 @@
 package com.sdm.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.sdm.config.SysConfig;
+import com.sdm.config.SysConfigProp;
 import com.sdm.entity.Category;
 import com.sdm.entity.Goods;
 import com.sdm.service.CategoryService;
 import com.sdm.service.GoodsService;
-import com.sdm.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * com.sdm.controller说明:
@@ -33,7 +28,7 @@ public class GoodsController {
     private Logger logger = LoggerFactory.getLogger(GoodsController.class);
 
     @Autowired
-    private SysConfig sysConfig;
+    private SysConfigProp sysConfigProp;
 
     @Autowired
     private GoodsService goodsService;

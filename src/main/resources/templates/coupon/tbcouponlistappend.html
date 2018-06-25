@@ -1,0 +1,14 @@
+
+        <div class="col-md-3" th:each="coupon, couponstat : ${tbkCouponList}" >
+                <div class="card-body">
+                    <img class="card-img-top" th:title="${coupon.title}"  th:src="${coupon.pictUrl}" data-src="" alt="Card image cap">
+                    <a class="link" th:href="${coupon.couponClickUrl}" href="#" th:title="${coupon.title}" th:text="${coupon.title}"></a>
+                    <div class="card mb-3 box-shadow">
+                        <a class="btn btn-outline-danger" th:href="${coupon.couponClickUrl}" th:title="${coupon.couponInfo}" th:text="${coupon.couponInfo}"></a>
+                    </div>
+                    <div>
+                        <span style="color: red" class="pull-right"  th:text="${'折扣价：' + coupon.zkFinalPrice}"></span>
+                        <small class="text-muted" th:text="${'月销量 ' + coupon.volume}">999</small>
+                    </div>
+            </div>
+        </div>

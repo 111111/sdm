@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "sdm.sys")
-public class SysConfig {
+public class SysConfigProp {
     @Value("${sdm.sys.upload.path}")
     private String uploadPath;
 

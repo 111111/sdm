@@ -1,6 +1,8 @@
 package com.sdm.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.sdm.cache.SysConfigCache;
+import com.sdm.constant.SysConfigConstant;
 import com.sdm.entity.Goods;
 import com.sdm.entity.User;
 import com.sdm.service.GoodsService;
@@ -33,6 +35,7 @@ public class HomeController {
     }
     @RequestMapping("/")
     public String home(Model model) {
+
         List<Goods> goodsList = goodsService.getGoodPage(1, 18);
         PageInfo<Goods> pageInfo = new PageInfo<Goods>(goodsList);
 
