@@ -1,18 +1,21 @@
 package com.sdm.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.sdm.bean.TBCouponBean;
 import com.sdm.entity.Coupon;
 import com.sdm.service.CouponService;
-import com.sdm.service.RedisService;
 import com.sdm.service.TBService;
-import com.sdm.tbapi.TbkAPI;
+import com.sdm.util.TBUtils;
 import com.taobao.api.response.TbkDgItemCouponGetResponse;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,14 +33,17 @@ public class CouponController {
     @Autowired
     private TBService tbService;
 
+
     @RequestMapping("/tbcouponlist")
-    public String tbCcuponList(Long pi, String searchName, Model model){
+    public String tbCcuponList(Long pi, Long platform, String searchName, Model model){
         String cat = null;
-        Long platform = 1L;
+        if(platform == null || platform <= 0){
+            platform = 1L;
+        }
         if(pi == null || pi <= 0){
             pi = 1L;
         }
-        List<TbkDgItemCouponGetResponse.TbkCoupon> tbkCouponList = tbService.getCoupon(platform, cat, searchName, 20L, pi);
+        List<TbkDgItemCouponGetResponse.TbkCoupon> tbkCouponList = tbService.getCouponList(platform, cat, searchName, 20L, pi);
         model.addAttribute("tbkCouponList", tbkCouponList);
 
         model.addAttribute("cat", cat);
@@ -48,13 +54,15 @@ public class CouponController {
     }
 
     @RequestMapping("/tbcouponlistappend")
-    public String tbCcuponListappend(Long pi, String searchName, Model model){
+    public String tbCcuponListappend(Long pi, Long platform , String searchName, Model model){
         String cat = null;
-        Long platform = 1L;
+        if(platform == null || platform <= 0){
+            platform = 1L;
+        }
         if(pi == null || pi <= 0){
             pi = 1L;
         }
-        List<TbkDgItemCouponGetResponse.TbkCoupon> tbkCouponList = tbService.getCoupon(platform, cat, searchName, 20L, pi);
+        List<TbkDgItemCouponGetResponse.TbkCoupon> tbkCouponList = tbService.getCouponList(platform, cat, searchName, 20L, pi);
         model.addAttribute("tbkCouponList", tbkCouponList);
 
         model.addAttribute("cat", cat);
@@ -62,6 +70,7 @@ public class CouponController {
         model.addAttribute("searchName", searchName);
         return "coupon/tbcouponlistappend";
     }
+
 
     /**
      *

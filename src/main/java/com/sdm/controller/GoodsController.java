@@ -1,20 +1,33 @@
 package com.sdm.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.sdm.bean.TBCouponBean;
+import com.sdm.cache.SysConfigCache;
 import com.sdm.config.SysConfigProp;
 import com.sdm.entity.Category;
 import com.sdm.entity.Goods;
 import com.sdm.service.CategoryService;
 import com.sdm.service.GoodsService;
+import com.sdm.service.TBService;
+import com.sdm.util.IpUtil;
+import com.sdm.util.TBUtils;
+import com.taobao.api.response.TbkDgItemCouponGetResponse;
+import com.taobao.api.response.TbkItemInfoGetResponse;
+import com.taobao.api.response.TbkTpwdCreateResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * com.sdm.controller说明:
@@ -28,13 +41,13 @@ public class GoodsController {
     private Logger logger = LoggerFactory.getLogger(GoodsController.class);
 
     @Autowired
-    private SysConfigProp sysConfigProp;
-
-    @Autowired
     private GoodsService goodsService;
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private TBService tbService;
 
 
 
@@ -80,6 +93,10 @@ public class GoodsController {
         PageInfo<Goods> pageInfo = new PageInfo<Goods>(goodsList);
         return  pageInfo;
     }
+
+
+
+
 
 
 

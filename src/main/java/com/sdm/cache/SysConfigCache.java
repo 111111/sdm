@@ -44,19 +44,23 @@ public class SysConfigCache {
     }
 
     public static String getTBApiUrl(){
-        return getParamvalue(SysConfigConstant.tb_api_url);
+        return getParamvalue(SysConfigConstant.TB_API_URL);
     }
 
     public static String getTBAppkey(){
-        return getParamvalue(SysConfigConstant.tb_app_key);
+        return getParamvalue(SysConfigConstant.TB_APP_KEY);
     }
 
     public static String getTBSecret(){
-        return getParamvalue(SysConfigConstant.tb_app_secret);
+        return getParamvalue(SysConfigConstant.TB_APP_SECRET);
     }
 
     public static String getTBPid(){
-        return getParamvalue(SysConfigConstant.tb_pid);
+        return getParamvalue(SysConfigConstant.TB_PID);
+    }
+
+    public static String getTBUserid(){
+        return getParamvalue(SysConfigConstant.TB_USERID);
     }
 
     /**

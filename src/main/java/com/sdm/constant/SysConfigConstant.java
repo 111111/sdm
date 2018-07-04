@@ -7,15 +7,19 @@ package com.sdm.constant;
  */
 public interface SysConfigConstant {
 
-    String tb_app_key = "TB_APP_KEY";
+    int CACHE_TIMEOUT = 30;
 
-    String tb_app_secret = "TB_APP_SECRET";
+    String TB_APP_KEY = "TB_APP_KEY";
 
-    String tb_pid = "TB_PID";
+    String TB_APP_SECRET = "TB_APP_SECRET";
 
-    String tb_api_url = "TB_API_URL";
+    String TB_PID = "TB_PID";
 
-    String tb_api_tbsandbox_url = "TB_API_TBSANDBOX_URL";
+    String TB_API_URL = "TB_API_URL";
+
+    String TB_API_TBSANDBOX_URL = "TB_API_TBSANDBOX_URL";
+
+    String TB_USERID = "TB_USERID";
 
 
 }
