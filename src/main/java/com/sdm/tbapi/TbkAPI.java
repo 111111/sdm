@@ -32,7 +32,7 @@ public class TbkAPI {
     public static List<TbkDgItemCouponGetResponse.TbkCoupon> getCoupon(TbkDgItemCouponGetRequest req )throws Exception{
         TaobaoClient client = getTaobaoClient();
         TbkDgItemCouponGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
 
         return rsp.getResults();
     }
@@ -73,7 +73,7 @@ public class TbkAPI {
     public static TbkCouponGetResponse.MapData getCouponInfo(TbkCouponGetRequest req)throws Exception{
         TaobaoClient client = getTaobaoClient();
         TbkCouponGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return  rsp.getData();
     }
     /**
@@ -98,7 +98,7 @@ public class TbkAPI {
         }
 
         TbkCouponGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return  rsp.getData();
     }
 
@@ -111,7 +111,7 @@ public class TbkAPI {
     public static List<NTbkItem>  getTbkItem(TbkItemGetRequest req)throws Exception{
         TaobaoClient client = getTaobaoClient();
         TbkItemGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return rsp.getResults();
     }
     /**
@@ -242,14 +242,14 @@ public class TbkAPI {
         TaobaoClient client = getTaobaoClient();
 
         TbkDgMaterialOptionalResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return rsp.getResultList();
     }
 
     public static List<TbkItemInfoGetResponse.NTbkItem> getTbkItemInfo(TbkItemInfoGetRequest req)throws Exception{
         TaobaoClient client = getTaobaoClient();
         TbkItemInfoGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return rsp.getResults();
     }
     /**
@@ -276,7 +276,7 @@ public class TbkAPI {
     public static List<NTbkShop> getShopRecommend(TbkShopRecommendGetRequest req)throws Exception{
         TaobaoClient client = getTaobaoClient();
         TbkShopRecommendGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return rsp.getResults();
     }
     /**
@@ -299,7 +299,7 @@ public class TbkAPI {
     public static List<TbkJuTqgGetResponse.Results> getTQG(TbkJuTqgGetRequest req) throws Exception {
         TaobaoClient client = getTaobaoClient();
         TbkJuTqgGetResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return rsp.getResults();
     }
     /**
@@ -325,7 +325,7 @@ public class TbkAPI {
     public static TbkTpwdCreateResponse.MapData createTpwd(TbkTpwdCreateRequest req)throws Exception{
         TaobaoClient client = getTaobaoClient();
         TbkTpwdCreateResponse rsp = client.execute(req);
-        logger.debug(rsp.getBody());
+        logger.info(rsp.getBody());
         return  rsp.getData();
     }
     /**
@@ -356,46 +356,43 @@ public class TbkAPI {
     }
 
     /**
-     * 淘宝客商品猜你喜欢
-     * @param userNick false 用户昵称，from cookie : _nk_或者tracknick ; from百川sdk : nick
-     * @param userId false 用户数字ID，from cookie : unb
-     * @param os true 系统类型，ios, android, other
-     * @param idfa false ios广告跟踪id
-     * @param imei false android设备imei
-     * @param imeiMd5 false android设备imeiMD5值，32位小写
-     * @param ip true 客户端ip
-     * @param ua true userAgent
-     * @param apnm false 应用包名
-     * @param net true 联网方式，wifi, cell, unknown
-     * @param mn false 设备型号
-     * @param pageSize false 页大小
-     * @param pageNo false 第几页
+     * 淘宝客物料下行-导购
+     *通用物料推荐，传入官方公布的物料id，可获取指定物料
+     * @param mid 官方的物料Id(详细物料id见：https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8576096)
+     * @param pageSize 页大小，默认20，1~100
+     * @param pageNo 第几页，默认：1
      * @return
      */
-//    public static Object getGuessLike(String userNick, Long userId, String os, String idfa, String imei, String imeiMd5,
-//                                      String ip, String ua, String apnm, String net, String mn, Long pageSize, Long pageNo ){
-//
-//        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
-//        TbkItemGuessLikeRequest req = new TbkItemGuessLikeRequest();
-//        req.setAdzoneId(123L);
-//        req.setUserNick("abc");
-//        req.setUserId(123456L);
-//        req.setOs("ios");
-//        req.setIdfa("65A509BA-227C-49AC-91EC-DE6817E63B10");
-//        req.setImei("641221321098757");
-//        req.setImeiMd5("115d1f360c48b490c3f02fc3e7111111");
-//        req.setIp("106.11.34.15");
-//        req.setUa("Mozilla/5.0");
-//        req.setApnm("com.xxx");
-//        req.setNet("wifi");
-//        req.setMn("iPhone7%2C2");
-//        req.setPageNo(1L);
-//        req.setPageSize(20L);
-//        TbkItemGuessLikeResponse rsp = client.execute(req);
-//        System.out.println(rsp.getBody());
-//    }
+    public static List<TbkDgOptimusMaterialResponse.MapData> optimusMaterial(Long mid, Long pageSize, Long pageNo) throws Exception{
+        TbkDgOptimusMaterialRequest req = new TbkDgOptimusMaterialRequest();
+        req.setAdzoneId(SysConfigCache.getTBAdzoneId());
+        req.setPageSize(pageSize);
+        req.setPageNo(pageNo);
+        req.setMaterialId(mid);
+        return optimusMaterial(req);
+    }
+    public static List<TbkDgOptimusMaterialResponse.MapData> optimusMaterial(TbkDgOptimusMaterialRequest req) throws Exception{
+        TaobaoClient client = getTaobaoClient();
+        TbkDgOptimusMaterialResponse rsp = client.execute(req);
+        logger.info(rsp.getBody());
+        return rsp.getResultList();
+    }
 
 
+    public static String  createtpwdwireless(Long userId, String text, String url, String logo, String ext)throws Exception{
+        TaobaoClient client = getTaobaoClient();
+        WirelessShareTpwdCreateRequest req = new WirelessShareTpwdCreateRequest();
+        WirelessShareTpwdCreateRequest.GenPwdIsvParamDto obj1 = new WirelessShareTpwdCreateRequest.GenPwdIsvParamDto();
+        obj1.setExt(ext);
+        obj1.setLogo(logo);
+        obj1.setUrl(url);
+        obj1.setText(text);
+        obj1.setUserId(userId);
+        req.setTpwdParam(obj1);
+        WirelessShareTpwdCreateResponse rsp = client.execute(req);
+        logger.info(rsp.getBody());
+        return rsp.getModel();
+    }
 
 
     /**

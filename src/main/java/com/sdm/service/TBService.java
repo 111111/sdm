@@ -30,5 +30,9 @@ public interface TBService {
 
     TbkTpwdCreateResponse.MapData createTpwd(String userId, String text, String url, String logo, String ext);
 
+    String createTpwdWireless(Long userId, String text, String url, String logo, String ext);
+
     List<TbkJuTqgGetResponse.Results> getTQG(TbkJuTqgGetRequest req);
+
+    List<TbkDgOptimusMaterialResponse.MapData> optimusMaterial(Long mid, Long pageSize, Long pageNo);
 }

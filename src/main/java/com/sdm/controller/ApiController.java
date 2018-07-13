@@ -1,7 +1,11 @@
 package com.sdm.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.sdm.bean.TBCouponBean;
 import com.sdm.cache.SysConfigCache;
+import com.sdm.entity.CategoryRecommend;
+import com.sdm.entity.TbCategory;
+import com.sdm.service.CategoryService;
 import com.sdm.service.TBService;
 import com.sdm.util.IpUtil;
 import com.sdm.util.TBUtils;
@@ -35,6 +39,9 @@ public class ApiController {
     @Autowired
     private TBService tbService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     /**
      *
      * @param pi
@@ -51,6 +58,9 @@ public class ApiController {
 
         if(pi == null || pi <= 0){
             pi = 1L;
+        }
+        if("null".equals(searchName)){
+            searchName = null;
         }
         List<TbkDgItemCouponGetResponse.TbkCoupon> tbkCouponList = tbService.getCouponList(platform, cat, searchName, 20L, pi);
         List<TBCouponBean> tbCouponBeanList = new ArrayList<>();
@@ -124,9 +134,6 @@ public class ApiController {
 
             reMap.put("coupon", tbCouponBean);
 
-            String ext = null;
-            TbkTpwdCreateResponse.MapData data = tbService.createTpwd(SysConfigCache.getTBUserid(), coupon.getTitle(), coupon.getCouponClickUrl(), coupon.getPictUrl(), ext);
-            reMap.put("model", data.getModel());
         }
         return reMap;
 
@@ -137,7 +144,7 @@ public class ApiController {
                                  Long startPrice, Long endPrice, Long startTkRate, Long endTkRate, Long platform, Long pageNo){
         TbkItemGetRequest req = new TbkItemGetRequest();
         req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick");
-        if(q != null && !"".equals(q)){
+        if(q != null && !"".equals(q) && !"null".equals(q)){
             req.setQ(q);
         }
         if(cat != null && !"".equals(cat)){
@@ -216,6 +223,9 @@ public class ApiController {
         if(pageNo == null || pageNo <= 0){
             pageNo = 1L;
         }
+        if("null".equals(q)){
+            q = null;
+        }
         TbkDgMaterialOptionalRequest req = new TbkDgMaterialOptionalRequest();
         req.setStartDsr(startDsr);
         req.setPlatform(platform);
@@ -245,11 +255,27 @@ public class ApiController {
 
     }
 
+    /**
+     * 淘宝客淘口令
+     * @param text true 口令弹框内容
+     * @param url true 口令跳转目标页 https://uland.taobao.com/
+     * @param logo 口令弹框logoURL
+     * @param ext 扩展字段JSON格式 {}
+     * @return
+     */
     @RequestMapping("/createtbwd")
     @ResponseBody
     public Object createTpwd(String text, String url, String logo, String ext){
+
         TbkTpwdCreateResponse.MapData data = tbService.createTpwd(SysConfigCache.getTBUserid(), text, url, logo, ext);
         return data;
+    }
+    @RequestMapping("/createtpwdwireless")
+    @ResponseBody
+    public Object createTpwdWireless(String text, String url, String logo, String ext){
+
+        String t = tbService.createTpwdWireless(Long.parseLong(SysConfigCache.getTBUserid()), text, url, logo, ext);
+        return t;
     }
     @RequestMapping("/gettqg")
     @ResponseBody
@@ -263,6 +289,56 @@ public class ApiController {
         req.setPageSize(20L);
         List<TbkJuTqgGetResponse.Results> results = tbService.getTQG(req);
         return results;
+
+    }
+
+    @RequestMapping("/getcategoryrecommend")
+    @ResponseBody
+    public Object getCateGoryRecommend(){
+        List<CategoryRecommend> categoryRecommendList = categoryService.selectListAll();
+        return categoryRecommendList;
+
+    }
+
+    @RequestMapping("/category")
+    @ResponseBody
+    public Object getCateGory(String q, Long tbpid, Integer rid, Integer ps, Integer pi){
+        if(tbpid == null || tbpid < 0){
+            tbpid = 0L;
+        }
+        if(ps == null || ps <= 0){
+            ps = 20;
+        }
+        if(pi == null || pi <= 0){
+            pi = 1;
+        }
+        if("null".equals(q)){
+            q = null;
+        }
+        CategoryRecommend categoryRecommend = null;
+        if(rid != null && rid > 0){
+            categoryRecommend = categoryService.selectCategoryRecommendById(rid);
+        }
+        TbCategory tbCategory = null;
+        if(tbpid != null && tbpid > 0 ){
+            tbCategory = categoryService.findTbCategoryByTbcid(tbpid);
+        }
+        PageInfo<TbCategory> pageInfo = categoryService.findTBCategoryPage(q, tbpid, rid, pi, ps);
+
+        Map reMap = new HashMap();
+        reMap.put("recommend", categoryRecommend);
+        reMap.put("category", tbCategory);
+        reMap.put("categoryList", pageInfo.getList());
+        return reMap;
+    }
+
+    @RequestMapping("/optimusmaterial")
+    @ResponseBody
+    public Object optimusMaterial(Long mid, Long pi){
+        if(pi == null || pi <= 0){
+            pi = 1L;
+        }
+        return tbService.optimusMaterial(mid, 20L, pi);
 
     }
 

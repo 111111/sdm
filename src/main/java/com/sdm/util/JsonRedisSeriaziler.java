@@ -1,7 +1,10 @@
 package com.sdm.util;
 
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sdm.bean.WxEncryptedDataBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +51,8 @@ public class JsonRedisSeriaziler {
             return null;
         }
         try {
+            //忽略json有，bean没有的字段
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             return objectMapper.readValue(str, clazz);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -93,6 +98,10 @@ public class JsonRedisSeriaziler {
      }
 
     public static void main(String[] args) {
+
+         String json = "{\"openId\":\"oqwB75cxrxskSLA7cFbJOzl7rRHc\",\"nickName\":\"☁️云☁️\",\"gender\":1,\"language\":\"zh_CN\",\"city\":\"Shenzhen\",\"province\":\"Guangdong\",\"country\":\"China\",\"avatarUrl\":\"https://wx.qlogo.cn/mmopen/vi_32/dhBuZzkFztLL52wapdICb2ccoHGmbIb72KiaJl0jslTmGnlM73e9zPmf7Pr63Ay9qkG5ftc31WnzMKXPf2e6Psw/132\",\"unionId\":\"oVAt_1rkQJLE5Oe1drMwwviurl7E\",\"watermark\":{\"timestamp\":1531209139,\"appid\":\"wx82630aab6a8a5ed4\"}}";
+        WxEncryptedDataBean bean = deserializeAsObject(json, WxEncryptedDataBean.class);
+        System.out.println("bean = " + bean);
 
         // System.out.println("s2 = " +
         // deserializeAsObject(seriazileAsString(s), String.class));

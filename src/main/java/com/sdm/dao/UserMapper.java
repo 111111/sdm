@@ -3,7 +3,6 @@ package com.sdm.dao;
 import com.sdm.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
 @Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,7 +13,9 @@ public interface UserMapper {
 
     User selectByPrimaryKey(Integer id);
 
-    List<User> selectAll();
+    User selectByParam(User record);
+
+    User selectLogin(String username);
 
     int updateByPrimaryKeySelective(User record);
 

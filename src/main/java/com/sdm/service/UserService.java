@@ -3,6 +3,7 @@ package com.sdm.service;
 import com.sdm.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * com.sdm.service说明:
@@ -10,5 +11,9 @@ import java.util.List;
  * 18/5/24 16:14
  */
 public interface UserService {
-    List<User> listAllUser();
+
+    Map wxCheckSession(String sessionId);
+
+    Map wxLogin(String code, String encryptedData, String iv);
+
 }

@@ -1,8 +1,9 @@
 package com.sdm.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Coupon {
+public class Coupon implements Serializable {
     private Long id;
 
     private Long goodsid;

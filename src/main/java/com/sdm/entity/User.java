@@ -1,8 +1,9 @@
 package com.sdm.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
     private Integer id;
 
     private String username;
@@ -14,6 +15,14 @@ public class User {
     private Date createtime;
 
     private Date updatetime;
+
+    private String nickname;
+
+    private String mobile;
+
+    private Integer emailstatus;
+
+    private Integer mobilestatus;
 
     public Integer getId() {
         return id;
@@ -63,6 +72,38 @@ public class User {
         this.updatetime = updatetime;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
+    }
+
+    public Integer getEmailstatus() {
+        return emailstatus;
+    }
+
+    public void setEmailstatus(Integer emailstatus) {
+        this.emailstatus = emailstatus;
+    }
+
+    public Integer getMobilestatus() {
+        return mobilestatus;
+    }
+
+    public void setMobilestatus(Integer mobilestatus) {
+        this.mobilestatus = mobilestatus;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -72,6 +113,10 @@ public class User {
                 ", email='" + email + '\'' +
                 ", createtime=" + createtime +
                 ", updatetime=" + updatetime +
+                ", nickname='" + nickname + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", emailstatus=" + emailstatus +
+                ", mobilestatus=" + mobilestatus +
                 '}';
     }
 }

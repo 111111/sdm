@@ -45,6 +45,20 @@ public class MD5Utils
       }
     }
 
+    /**
+     *
+     * @param password
+     * @return
+     */
+    public static String md5Password(String password){
+        try{
+            return md5(md5Half(password));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     private static String byteArrayToHexString(byte b[])
     {
         StringBuffer sb = new StringBuffer();

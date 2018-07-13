@@ -171,6 +171,14 @@ public class TBServiceImpl implements TBService {
         }
         return null;
     }
+    public String createTpwdWireless(Long userId, String text, String url, String logo, String ext){
+        try{
+            return TbkAPI.createtpwdwireless(userId, text, url, logo, ext);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      *
@@ -187,5 +195,21 @@ public class TBServiceImpl implements TBService {
         return  null;
     }
 
+    /**
+     * 淘宝客物料下行-导购
+     * 通用物料推荐，传入官方公布的物料id，可获取指定物料
+     * @param mid 官方的物料Id(详细物料id见：https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8576096)
+     * @param pageSize 页大小，默认20，1~100
+     * @param pageNo 第几页，默认：1
+     * @return
+     */
+    public List<TbkDgOptimusMaterialResponse.MapData> optimusMaterial(Long mid, Long pageSize, Long pageNo){
+        try{
+            return TbkAPI.optimusMaterial(mid, pageSize, pageNo);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
 }

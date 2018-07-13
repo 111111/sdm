@@ -1,108 +1,175 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sdm.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.sdm.entity.User">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userName" jdbcType="VARCHAR" property="username" />
-    <result column="passWord" jdbcType="VARCHAR" property="password" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdm.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.sdm.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="passWord" property="password" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="nickName" property="nickname" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="emailStatus" property="emailstatus" jdbcType="INTEGER" />
+    <result column="mobileStatus" property="mobilestatus" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, userName, passWord, email, createTime, updateTime
+  <sql id="Base_Column_List" >
+    id, userName, passWord, email, createTime, updateTime, nickName, mobile, emailStatus, 
+    mobileStatus
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll"  resultMap="BaseResultMap">
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.sdm.entity.User" >
     select
     <include refid="Base_Column_List" />
     from t_user
+    where 1=1
+    <if test="username != null" >
+       and userName = #{username,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null" >
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="mobile != null" >
+      and mobile = #{mobile,jdbcType=VARCHAR}
+    </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+  <select id="selectLogin" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where 1=1
+    and (userName = #{username,jdbcType=VARCHAR}
+    or email = #{username,jdbcType=VARCHAR}
+    or mobile = #{username,jdbcType=VARCHAR}
+    )
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.sdm.entity.User" useGeneratedKeys="true" keyProperty="id">
     insert into t_user (userName, passWord,
-      email, createTime, updateTime
-      )
+      email, createTime, updateTime, 
+      nickName, mobile, emailStatus, 
+      mobileStatus)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{email,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{email,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{nickname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{emailstatus,jdbcType=INTEGER}, 
+      #{mobilestatus,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.sdm.entity.User" useGeneratedKeys="true" keyProperty="id">
     insert into t_user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
 
-      <if test="username != null">
+      <if test="username != null" >
         userName,
       </if>
-      <if test="password != null">
+      <if test="password != null" >
         passWord,
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         email,
       </if>
-      <if test="createtime != null">
+      <if test="createtime != null" >
         createTime,
       </if>
-      <if test="updatetime != null">
+      <if test="updatetime != null" >
         updateTime,
       </if>
+      <if test="nickname != null" >
+        nickName,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="emailstatus != null" >
+        emailStatus,
+      </if>
+      <if test="mobilestatus != null" >
+        mobileStatus,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
 
-      <if test="username != null">
+      <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
+      <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="createtime != null">
+      <if test="createtime != null" >
         #{createtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatetime != null">
+      <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="emailstatus != null" >
+        #{emailstatus,jdbcType=INTEGER},
+      </if>
+      <if test="mobilestatus != null" >
+        #{mobilestatus,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sdm.entity.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.sdm.entity.User" >
     update t_user
-    <set>
-      <if test="username != null">
+    <set >
+      <if test="username != null" >
         userName = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
+      <if test="password != null" >
         passWord = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="createtime != null">
+      <if test="createtime != null" >
         createTime = #{createtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatetime != null">
+      <if test="updatetime != null" >
         updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nickname != null" >
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="emailstatus != null" >
+        emailStatus = #{emailstatus,jdbcType=INTEGER},
+      </if>
+      <if test="mobilestatus != null" >
+        mobileStatus = #{mobilestatus,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sdm.entity.User">
+  <update id="updateByPrimaryKey" parameterType="com.sdm.entity.User" >
     update t_user
     set userName = #{username,jdbcType=VARCHAR},
       passWord = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
-      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      nickName = #{nickname,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      emailStatus = #{emailstatus,jdbcType=INTEGER},
+      mobileStatus = #{mobilestatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 </mapper>

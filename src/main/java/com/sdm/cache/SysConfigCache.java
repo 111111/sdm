@@ -74,5 +74,12 @@ public class SysConfigCache {
 
     }
 
+    public static String getWxAppid(){
+        return getParamvalue(SysConfigConstant.WX_APPID);
+    }
+    public static String getWxSecret(){
+        return getParamvalue(SysConfigConstant.WX_SECRET);
+    }
+
 
 }

@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 /**
  * com.sdm.config说明:
@@ -29,8 +30,17 @@ public class InterceptorConfig implements HandlerInterceptor {
 
 //        log.info("---------------------开始进入请求地址拦截----------------------------");
         String uri = httpServletRequest.getRequestURI();
-        String servletPath = httpServletRequest.getServletPath();
-        log.info("request uri:{},servletPath={}", uri, servletPath);
+
+        StringBuffer param = new StringBuffer(32);
+
+        Enumeration<String> pNames =  httpServletRequest.getParameterNames();
+        for(Enumeration e = pNames; pNames.hasMoreElements();){
+            String thisName = e.nextElement().toString();
+            String thisValue = httpServletRequest.getParameter(thisName);
+            param.append("&").append(thisName).append("=").append(thisValue);
+        }
+
+        log.info("request uri:{}?{}", uri, param);
         return true;
 
     }

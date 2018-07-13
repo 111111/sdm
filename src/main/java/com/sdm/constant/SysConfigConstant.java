@@ -21,5 +21,11 @@ public interface SysConfigConstant {
 
     String TB_USERID = "TB_USERID";
 
+    String WX_APPID = "WX_APPID";
+
+    String WX_SECRET = "WX_SECRET";
+
+    String WX_JSCODE2SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
+
 
 }
