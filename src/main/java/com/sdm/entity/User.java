@@ -3,6 +3,9 @@ package com.sdm.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ *
+ */
 public class User implements Serializable {
     private Integer id;
 
@@ -23,6 +26,8 @@ public class User implements Serializable {
     private Integer emailstatus;
 
     private Integer mobilestatus;
+
+    private String headerurl;
 
     public Integer getId() {
         return id;
@@ -104,6 +109,14 @@ public class User implements Serializable {
         this.mobilestatus = mobilestatus;
     }
 
+    public String getHeaderurl() {
+        return headerurl;
+    }
+
+    public void setHeaderurl(String headerurl) {
+        this.headerurl = headerurl;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -117,6 +130,7 @@ public class User implements Serializable {
                 ", mobile='" + mobile + '\'' +
                 ", emailstatus=" + emailstatus +
                 ", mobilestatus=" + mobilestatus +
+                ", headerurl='" + headerurl + '\'' +
                 '}';
     }
 }

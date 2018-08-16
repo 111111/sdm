@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdm.dao.TbCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.sdm.entity.TbCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tbpId" property="tbpid" jdbcType="INTEGER" />
+    <result column="cName" property="cname" jdbcType="VARCHAR" />
+    <result column="orderBy" property="orderby" jdbcType="INTEGER" />
+    <result column="tbcid" property="tbcid" jdbcType="INTEGER" />
+    <result column="rid" property="rid" jdbcType="INTEGER" />
+    <collection property="categoryList" column="{tbpid=tbcid}" javaType="ArrayList"
+                ofType="com.sdm.entity.TbCategory" select="selectListByParam"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tbpId, cName, orderBy, tbcid, rid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_tbcategory
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTbcid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_tbcategory
+    where tbcid = #{tbcid,jdbcType=INTEGER}
+  </select>
+  <select id="selectListByParam" resultMap="BaseResultMap" parameterType="com.sdm.entity.TbCategory" >
+    select
+    <include refid="Base_Column_List" />
+    from t_tbcategory
+    where 1=1
+    <if test="tbpid != null" >
+      and tbpId = #{tbpid,jdbcType=INTEGER}
+    </if>
+    <if test="rid != null" >
+      and rid = #{rid,jdbcType=INTEGER}
+    </if>
+    <if test="cname != null" >
+      <bind name="pattern1" value="'%'+cname+'%'"/>
+      and cName like #{pattern1}
+    </if>
+    order by orderBy desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_tbcategory
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sdm.entity.TbCategory" useGeneratedKeys="true" keyProperty="id">
+    insert into t_tbcategory (tbpId, cName,
+      orderBy, tbcid, rid)
+    values (#{tbpid,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR},
+      #{orderby,jdbcType=INTEGER}, #{tbcid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sdm.entity.TbCategory" useGeneratedKeys="true" keyProperty="id">
+    insert into t_tbcategory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tbpid != null" >
+        tbpId,
+      </if>
+      <if test="cname != null" >
+        cName,
+      </if>
+      <if test="orderby != null" >
+        orderBy,
+      </if>
+      <if test="tbcid != null" >
+        tbcid,
+      </if>
+      <if test="rid != null" >
+        rid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tbpid != null" >
+        #{tbpid,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null" >
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="orderby != null" >
+        #{orderby,jdbcType=INTEGER},
+      </if>
+      <if test="tbcid != null" >
+        #{tbcid,jdbcType=INTEGER},
+      </if>
+      <if test="rid != null" >
+        #{rid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sdm.entity.TbCategory" >
+    update t_tbcategory
+    <set >
+      <if test="tbpid != null" >
+        tbpId = #{tbpid,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null" >
+        cName = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="orderby != null" >
+        orderBy = #{orderby,jdbcType=INTEGER},
+      </if>
+      <if test="tbcid != null" >
+        tbcid = #{tbcid,jdbcType=INTEGER},
+      </if>
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sdm.entity.TbCategory" >
+    update t_tbcategory
+    set tbpId = #{tbpid,jdbcType=INTEGER},
+      cName = #{cname,jdbcType=VARCHAR},
+      orderBy = #{orderby,jdbcType=INTEGER},
+      tbcid = #{tbcid,jdbcType=INTEGER},
+      rid = #{rid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

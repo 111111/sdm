@@ -184,6 +184,19 @@ public class ApiController {
         return tbkItemList;
     }
 
+    @RequestMapping("/itemrecommend")
+    @ResponseBody
+    public Object itemRecommend(Long numiid){
+        if(numiid == null || numiid <= 0){
+            return null;
+        }
+        Long count = 10L;
+        Long platform = 2L;
+
+        List<NTbkItem> tbkItemList = tbService.itemRecommend(numiid, count, platform);
+        return tbkItemList;
+    }
+
     /**
      * 参数q与cat不能都为空
      * @param startDsr

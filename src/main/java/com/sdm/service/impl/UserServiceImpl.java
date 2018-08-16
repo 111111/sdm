@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
                     user.setCreatetime(now);
                     user.setUpdatetime(now);
                     user.setNickname(wxEncryptedDataBean.getNickName());
+                    user.setHeaderurl(wxEncryptedDataBean.getAvatarUrl());
 
                     userMapper.insertSelective(user);
 

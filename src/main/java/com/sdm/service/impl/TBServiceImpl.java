@@ -203,9 +203,27 @@ public class TBServiceImpl implements TBService {
      * @param pageNo 第几页，默认：1
      * @return
      */
+    @Override
     public List<TbkDgOptimusMaterialResponse.MapData> optimusMaterial(Long mid, Long pageSize, Long pageNo){
         try{
             return TbkAPI.optimusMaterial(mid, pageSize, pageNo);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * taobao.tbk.item.recommend.get( 淘宝客商品关联推荐查询 )
+     * @param numiid 商品Id
+     * @param count 返回数量，默认20，最大值40
+     * @param platform 链接形式：1：PC，2：无线，默认：１
+     * @return
+     */
+    @Override
+    public List<NTbkItem> itemRecommend(Long numiid, Long count, Long platform){
+        try{
+            return TbkAPI.itemRecommend(numiid, count, platform);
         }catch(Exception ex){
             ex.printStackTrace();
         }

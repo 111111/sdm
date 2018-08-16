@@ -394,6 +394,26 @@ public class TbkAPI {
         return rsp.getModel();
     }
 
+    /**
+     * taobao.tbk.item.recommend.get( 淘宝客商品关联推荐查询 )
+     * @param numiid 商品Id
+     * @param count 返回数量，默认20，最大值40
+     * @param platform 链接形式：1：PC，2：无线，默认：１
+     * @return
+     * @throws Exception
+     */
+    public static  List<NTbkItem> itemRecommend(Long numiid, Long count, Long platform)throws Exception{
+        TaobaoClient client = getTaobaoClient();
+        TbkItemRecommendGetRequest req = new TbkItemRecommendGetRequest();
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,nick,seller_id,volume");
+        req.setNumIid(numiid);
+        req.setCount(count);
+        req.setPlatform(platform);
+        TbkItemRecommendGetResponse rsp = client.execute(req);
+        logger.info(rsp.getBody());
+        return rsp.getResults();
+    }
+
 
     /**
      *

@@ -65,6 +65,7 @@ public class LoginController {
        if(recode == 100){
            reMap.put("user", map.get("user"));
            reMap.put("sessionId", map.get("sessionId"));
+
        }
 
        return reMap;

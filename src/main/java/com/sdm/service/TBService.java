@@ -35,4 +35,6 @@ public interface TBService {
     List<TbkJuTqgGetResponse.Results> getTQG(TbkJuTqgGetRequest req);
 
     List<TbkDgOptimusMaterialResponse.MapData> optimusMaterial(Long mid, Long pageSize, Long pageNo);
+
+    List<NTbkItem> itemRecommend(Long numiid, Long count, Long platform);
 }

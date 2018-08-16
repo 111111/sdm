@@ -12,10 +12,11 @@
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="emailStatus" property="emailstatus" jdbcType="INTEGER" />
     <result column="mobileStatus" property="mobilestatus" jdbcType="INTEGER" />
+    <result column="headerUrl" property="headerurl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, userName, passWord, email, createTime, updateTime, nickName, mobile, emailStatus, 
-    mobileStatus
+    mobileStatus, headerUrl
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -57,11 +58,11 @@
     insert into t_user (userName, passWord,
       email, createTime, updateTime, 
       nickName, mobile, emailStatus, 
-      mobileStatus)
+      mobileStatus, headerUrl)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
       #{nickname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{emailstatus,jdbcType=INTEGER}, 
-      #{mobilestatus,jdbcType=INTEGER})
+      #{mobilestatus,jdbcType=INTEGER}, #{headerurl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sdm.entity.User" useGeneratedKeys="true" keyProperty="id">
     insert into t_user
@@ -94,6 +95,9 @@
       <if test="mobilestatus != null" >
         mobileStatus,
       </if>
+      <if test="headerurl != null" >
+        headerUrl,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
 
@@ -123,6 +127,9 @@
       </if>
       <if test="mobilestatus != null" >
         #{mobilestatus,jdbcType=INTEGER},
+      </if>
+      <if test="headerurl != null" >
+        #{headerurl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="mobilestatus != null" >
         mobileStatus = #{mobilestatus,jdbcType=INTEGER},
       </if>
+      <if test="headerurl != null" >
+        headerUrl = #{headerurl,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -169,7 +179,8 @@
       nickName = #{nickname,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       emailStatus = #{emailstatus,jdbcType=INTEGER},
-      mobileStatus = #{mobilestatus,jdbcType=INTEGER}
+      mobileStatus = #{mobilestatus,jdbcType=INTEGER},
+      headerUrl = #{headerurl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
