@@ -48,4 +48,6 @@ public class IpUtil {
 
         return ipAddress;
     }
+    public static void main(String[] args){
+    }
 }
