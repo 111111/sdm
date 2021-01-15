@@ -116,7 +116,6 @@ public class UserServiceImpl implements UserService {
                 user = userMapper.selectByPrimaryKey(thirdUser.getUserid());
             }
             reMap.put("user", user);
-            reMap.put("thirdUser", thirdUser);
         }
         String key = RedisConstant.SESSIONKEY + sessionId;
         redisService.set(key, reMap);

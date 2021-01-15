@@ -13,11 +13,11 @@ import javax.servlet.annotation.WebListener;
 public class MyListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("-------------servletContext销毁......");
+        System.out.println("-------------servletContext初始化......");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("-----------servletContext初始化......");
+        System.out.println("-----------servletContext销毁......");
     }
 }
